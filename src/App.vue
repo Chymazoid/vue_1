@@ -1,17 +1,26 @@
 <template>
-    <h1>{{ msg }}</h1>
+    <div>
+       <h2 >{{title}}</h2>
+    </div>
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+
+
+
+    export default {
+        data() {
+            return {
+                title: 'Hi i am',
+                names: ['vald', 'max','Elena']
+
+            }
+
+        }
+
     }
-  }
-}
 </script>
 
-<style>
+<style scoped>
 
 </style>
