@@ -1,34 +1,20 @@
 <template>
     <div>
-       <h2 >{{title}}</h2>
+        <h1>List</h1>
         <input type="text" v-model="searchName">
         <ul>
             <li v-for="name of filteredNames">
                 {{name}}
             </li>
         </ul>
-        <app-list></app-list>
-
     </div>
 </template>
 
 <script>
-
     import ListMixin from './listMixin';
 
-
-
     export default {
-
-
-        data() {
-            return {
-                title: 'Hi i am',
-
-            }
-        },
         mixins: [ListMixin]
-
     }
 </script>
 
