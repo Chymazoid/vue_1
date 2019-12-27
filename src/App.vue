@@ -1,21 +1,104 @@
 <template>
-    <div>
-       <h2 >{{title}}</h2>
+    <div class="container">
+        <form action="" class="pt-3" autocomplete="off" @submit.prevent="onSubmit">
+            <div class="form-group">
+            <label for="email">Email</label>
+            <input
+                type="email"
+                id="email"
+                class="form-control"
+                :class="{'is-invalid':$v.email.$error}"
+                @blur="$v.email.$touch()"
+                v-model="email"
+                autocomplete="off"
+            >
+            <div class="invalid-feedback" v-if="!$v.email.required">Email field is required </div>
+            <div class="invalid-feedback" v-if="!$v.email.email">Email in correct </div>
+            <div class="invalid-feedback" v-if="!$v.email.uniqEmail">Thie mail is already exists </div>
+        </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    :class="{'is-invalid':$v.password.$error}"
+                    @blur="$v.password.$touch()"
+                    v-model="password"
+                    autocomplete="off"
+                >
+               <div class="invalid-feedback" v-if="!$v.password.minLength">
+                   Min Length of pass is {{ $v.password.$params.minLength.min }}. Not it is {{password.length}}
+               </div>
+
+
+            </div>
+            <div class="form-group">
+                <label for="confirm">confirm Password</label>
+                <input
+                    type="password"
+                    id="confirm"
+                    class="form-control"
+                    :class="{'is-invalid':$v.confirmPassword.$error}"
+                    @blur="$v.confirmPassword.$touch()"
+                    v-model="confirmPassword"
+                    autocomplete="off"
+                >
+                <div class="invalid-feedback" v-if="!$v.confirmPassword.sameAs">
+                   Passwords should match
+                </div>
+
+
+            </div>
+            <button
+                class="btn btn-success"
+                type="submit"
+                :disabled="$v.$invalid"
+            >Submit</button>
+
+        </form>
     </div>
 </template>
 
 <script>
-
-
+    import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
 
     export default {
         data() {
             return {
-                title: 'Hi i am',
-                names: ['vald', 'max','Elena']
-
+                email: '',
+                password:'',
+                confirmPassword: ''
             }
-
+        },
+        methods: {
+            onSubmit() {
+                console.log('Email', this.email)
+                console.log('Password', this.password)
+            }
+        },
+        validations: {
+            email: {
+                required,
+                email,
+                uniqEmail: function (newEmail) {
+                    if(newEmail === '') return true
+                   return new Promise((resolve, reject)=>{
+                        setTimeout(()=>{
+                            const value =  newEmail !== 'test@mail.ru';
+                            resolve(value);
+                        },1000)
+                   })
+                }
+            },
+            password: {
+                minLength: minLength(6)
+            },
+            confirmPassword: {
+                sameAs : sameAs((vue)=>{
+                    return vue.password
+                })
+            }
         }
 
     }
