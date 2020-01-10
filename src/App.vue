@@ -1,21 +1,34 @@
 <template>
-    <div>
-       <h2 >{{title}}</h2>
+    <div class="container text-center pt-5">
+        <h1>{{title}}</h1>
+        <app-counter></app-counter>
+        <app-second-counter></app-second-counter>
+        <app-actions></app-actions>
     </div>
 </template>
 
 <script>
-
-
+    import Counter from './Counter'
+    import SecondCounter from './SecondCounter'
+    import Actions from './Actions'
 
     export default {
         data() {
             return {
-                title: 'Hi i am',
-                names: ['vald', 'max','Elena']
+
 
             }
 
+        },
+        components: {
+            appCounter: Counter,
+            appActions: Actions,
+            appSecondCounter: SecondCounter
+        },
+        computed: {
+            title() {
+                return this.$store.getters.title
+            }
         }
 
     }
